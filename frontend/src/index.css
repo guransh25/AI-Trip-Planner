@@ -1,0 +1,35 @@
+/* src/index.css */
+/* These @tailwind directives inject Tailwind's base styles, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 3px;
+}
+
+/* Markdown itinerary styling */
+.itinerary-content h2 {
+  @apply text-xl font-bold text-slate-800 mt-6 mb-3;
+}
+.itinerary-content p {
+  @apply text-slate-600 leading-relaxed mb-2;
+}
+.itinerary-content ul {
+  @apply list-disc list-inside text-slate-600 space-y-1;
+}
+.itinerary-content strong {
+  @apply text-slate-800 font-semibold;
+}

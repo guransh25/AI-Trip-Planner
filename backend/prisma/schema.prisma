@@ -1,0 +1,43 @@
+// prisma/schema.prisma
+// This file defines your DATABASE STRUCTURE (called a schema)
+// Prisma reads this and creates actual PostgreSQL tables for you
+// Interview answer: "Prisma is an ORM - it lets me write JavaScript instead of raw SQL"
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // The DATABASE_URL comes from your .env file
+  // Format: postgresql://username:password@host:port/dbname
+  url      = env("DATABASE_URL")
+}
+
+// USER TABLE — stores registered users
+model User {
+  id        Int      @id @default(autoincrement()) // Auto-incrementing primary key
+  email     String   @unique                        // Must be unique — no duplicate accounts
+  password  String                                  // Stored as a bcrypt HASH, never plain text
+  name      String
+  createdAt DateTime @default(now())               // Auto-set when user registers
+
+  // One user can have MANY trips (one-to-many relationship)
+  trips Trip[]
+}
+
+// TRIP TABLE — stores each generated itinerary
+model Trip {
+  id          Int      @id @default(autoincrement())
+  destination String                                // e.g. "Paris, France"
+  days        Int                                   // e.g. 5
+  budget      String                                // e.g. "moderate"
+  travelStyle String                                // e.g. "adventure"
+  itinerary   String                                // The full AI-generated text
+  createdAt   DateTime @default(now())
+
+  // FOREIGN KEY — links each trip to a user
+  // If user is deleted, their trips are deleted too (onDelete: Cascade)
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
